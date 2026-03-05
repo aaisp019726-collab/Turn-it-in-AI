@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Completed Assignment – Turn-it-in-AI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <header>
+    <h1>📝 Turn-it-in-AI</h1>
+  </header>
+
+  <main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
+
+    {% if assignment_text %}
+    <section class="card">
+      <h2>Original Instructions</h2>
+      <pre class="assignment-text">{{ assignment_text }}</pre>
+    </section>
+    {% endif %}
+
+    <section class="card highlight">
+      <h2>✅ AI-Completed Answer</h2>
+      <div class="completed-text">{{ completed_text }}</div>
+    </section>
+
+    <form action="{{ url_for('submit') }}" method="POST" class="submit-form">
+      <input type="hidden" name="completed_text" value="{{ completed_text }}" />
+      <input type="hidden" name="course_id" value="{{ course_id }}" />
+      <input type="hidden" name="assignment_id" value="{{ assignment_id }}" />
+
+      <div class="actions">
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">← Start Over</a>
+        <button type="submit" class="btn btn-primary">🚀 Submit to Canvas</button>
+      </div>
+    </form>
+  </main>
+
+  <footer>
+    <p>Powered by Anthropic Claude &amp; Canvas LMS</p>
+  </footer>
+</body>
+</html>
