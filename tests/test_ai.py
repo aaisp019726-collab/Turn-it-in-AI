@@ -11,31 +11,25 @@ def test_complete_assignment_empty_raises(monkeypatch):
         complete_assignment("")
 
 
-def test_complete_assignment_calls_openai(monkeypatch):
-    """complete_assignment should call the OpenAI API and return text."""
-    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+def test_complete_assignment_calls_claude(monkeypatch):
+    """complete_assignment should call the Anthropic API and return text."""
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
 
-    # Mock the OpenAI client
+    # Mock the Anthropic client
+    class FakeTextBlock:
+        text = "This is the completed assignment."
+
     class FakeMessage:
-        content = "This is the completed assignment."
+        content = [FakeTextBlock()]
 
-    class FakeChoice:
-        message = FakeMessage()
-
-    class FakeCompletion:
-        choices = [FakeChoice()]
-
-    class FakeChatCompletions:
+    class FakeMessages:
         def create(self, **kwargs):
-            return FakeCompletion()
-
-    class FakeChat:
-        completions = FakeChatCompletions()
+            return FakeMessage()
 
     class FakeClient:
-        chat = FakeChat()
+        messages = FakeMessages()
 
-    monkeypatch.setattr("ai.OpenAI", lambda **kwargs: FakeClient())
+    monkeypatch.setattr("ai.anthropic.Anthropic", lambda **kwargs: FakeClient())
 
     from ai import complete_assignment
 
@@ -44,20 +38,17 @@ def test_complete_assignment_calls_openai(monkeypatch):
 
 
 def test_complete_assignment_propagates_api_error(monkeypatch):
-    """complete_assignment should propagate errors from the OpenAI API."""
-    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    """complete_assignment should propagate errors from the Anthropic API."""
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
 
-    class FakeChatCompletions:
+    class FakeMessages:
         def create(self, **kwargs):
             raise RuntimeError("API quota exceeded")
 
-    class FakeChat:
-        completions = FakeChatCompletions()
-
     class FakeClient:
-        chat = FakeChat()
+        messages = FakeMessages()
 
-    monkeypatch.setattr("ai.OpenAI", lambda **kwargs: FakeClient())
+    monkeypatch.setattr("ai.anthropic.Anthropic", lambda **kwargs: FakeClient())
 
     from ai import complete_assignment
 

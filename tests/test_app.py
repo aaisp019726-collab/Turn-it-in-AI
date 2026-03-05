@@ -52,7 +52,7 @@ def test_complete_success(client, monkeypatch):
 def test_complete_ai_failure(client, monkeypatch):
     """POST /complete should redirect to index if AI raises an exception."""
     def boom(text):
-        raise RuntimeError("OpenAI down")
+        raise RuntimeError("Claude API down")
 
     monkeypatch.setattr("app.complete_assignment", boom)
 

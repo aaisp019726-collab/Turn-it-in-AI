@@ -1,6 +1,6 @@
 """
 Turn-it-in-AI: Flask application that accepts assignments,
-completes them with OpenAI, and submits them automatically.
+completes them with Anthropic Claude, and submits them automatically.
 """
 
 import os

@@ -1,10 +1,10 @@
 """
-AI module: uses OpenAI to complete an assignment.
+AI module: uses Anthropic Claude to complete an assignment.
 """
 
 import os
 
-from openai import OpenAI
+import anthropic
 
 _SYSTEM_PROMPT = (
     "You are an expert academic assistant. "
@@ -15,7 +15,7 @@ _SYSTEM_PROMPT = (
 
 
 def complete_assignment(assignment_text: str) -> str:
-    """Use OpenAI to complete the given assignment.
+    """Use Anthropic Claude to complete the given assignment.
 
     Args:
         assignment_text: The assignment instructions or questions.
@@ -25,21 +25,21 @@ def complete_assignment(assignment_text: str) -> str:
 
     Raises:
         ValueError: If assignment_text is empty.
-        openai.OpenAIError: If the API call fails.
+        anthropic.APIError: If the API call fails.
     """
     if not assignment_text:
         raise ValueError("assignment_text must not be empty")
 
-    api_key = os.environ.get("OPENAI_API_KEY")
-    client = OpenAI(api_key=api_key)
+    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    client = anthropic.Anthropic(api_key=api_key)
 
-    response = client.chat.completions.create(
-        model="gpt-4o",
+    message = client.messages.create(
+        model="claude-opus-4-5",
+        max_tokens=4096,
+        system=_SYSTEM_PROMPT,
         messages=[
-            {"role": "system", "content": _SYSTEM_PROMPT},
             {"role": "user", "content": assignment_text},
         ],
-        temperature=0.7,
     )
 
-    return response.choices[0].message.content
+    return message.content[0].text
