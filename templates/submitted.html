@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submission Status – Turn-it-in-AI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #f0f4f8;
+      color: #1a202c;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+    header { text-align: center; margin-bottom: 2rem; }
+    header h1 { font-size: 2rem; font-weight: 800; color: #2b6cb0; }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.08);
+      padding: 2rem;
+      width: 100%;
+      max-width: 720px;
+      text-align: center;
+    }
+    .status-icon { font-size: 4rem; margin-bottom: 1rem; }
+    .status-message { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .status-detail { color: #4a5568; margin-bottom: 1.5rem; }
+    .btn {
+      display: inline-block;
+      padding: 0.65rem 1.5rem;
+      background: #2b6cb0;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background .2s;
+    }
+    .btn:hover { background: #2c5282; }
+    footer { margin-top: 3rem; color: #718096; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>✏️ Turn-it-in-AI</h1>
+  </header>
+
+  <div class="card">
+    {% if result.success %}
+      <div class="status-icon">🎉</div>
+      <div class="status-message" style="color:#276749;">Assignment Turned In!</div>
+    {% else %}
+      <div class="status-icon">❌</div>
+      <div class="status-message" style="color:#c53030;">Submission Failed</div>
+    {% endif %}
+
+    <div class="status-detail">{{ result.message }}</div>
+
+    <a href="/" class="btn">← Start a New Assignment</a>
+  </div>
+
+  <footer>Powered by OpenAI · Turn-it-in-AI</footer>
+</body>
+</html>
