@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submitted! – Turn-it-in-AI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <header>
+    <h1>📝 Turn-it-in-AI</h1>
+  </header>
+
+  <main>
+    <section class="card success-card">
+      <h2>🎉 Assignment Submitted!</h2>
+      <p>Your completed assignment has been turned in to Canvas automatically.</p>
+
+      {% if submission %}
+      <table class="submission-details">
+        <tbody>
+          {% if submission.get('id') %}
+          <tr><th>Submission ID</th><td>{{ submission.id }}</td></tr>
+          {% endif %}
+          {% if submission.get('submitted_at') %}
+          <tr><th>Submitted At</th><td>{{ submission.submitted_at }}</td></tr>
+          {% endif %}
+          {% if submission.get('workflow_state') %}
+          <tr><th>Status</th><td>{{ submission.workflow_state }}</td></tr>
+          {% endif %}
+        </tbody>
+      </table>
+      {% endif %}
+
+      <a href="{{ url_for('index') }}" class="btn btn-primary">Submit Another Assignment</a>
+    </section>
+  </main>
+
+  <footer>
+    <p>Powered by OpenAI GPT-4o &amp; Canvas LMS</p>
+  </footer>
+</body>
+</html>
